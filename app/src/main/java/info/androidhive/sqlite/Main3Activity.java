@@ -231,8 +231,8 @@ public class Main3Activity extends AppCompatActivity {
      * button text to UPDATE
      */
     private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
-        final Button btnDatePicker, btnTimePicker ,btnTimePicker2;
-        final  EditText txtDate, txtTime,txtTime2;
+        final ImageView btnDatePicker, btnTimePicker ,btnTimePicker2;
+        final  TextView txtDate, txtTime,txtTime2;
 
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getApplicationContext());
@@ -242,8 +242,13 @@ public class Main3Activity extends AppCompatActivity {
         alertDialogBuilderUserInput.setView(view);
 
         final EditText inputNote = view.findViewById(R.id.note);
-        TextView dialogTitle = view.findViewById(R.id.dialog_title);
-        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
+
+
+        // very imppoooooooooortant
+
+//        TextView dialogTitle = view.findViewById(R.id.dialog_title);
+//        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
+
         btnDatePicker=view.findViewById(R.id.btn_date);
         btnTimePicker=view.findViewById(R.id.btn_time);
         btnTimePicker2=view.findViewById(R.id.btn_time3);
