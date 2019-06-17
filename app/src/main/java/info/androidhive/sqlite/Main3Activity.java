@@ -345,9 +345,11 @@ public class Main3Activity extends AppCompatActivity {
                     updateNote(inputNote.getText().toString(), position);
                 } else {
                     // create new note
-                    String[] note = new String[2];
+                    String[] note = new String[5];
                     note[0] = inputNote.getText().toString();
                     note[1] = txtDate.getText().toString();
+                    note[1] = txtTime.getText().toString();
+                    note[1] = txtTime2.getText().toString();
                     createNote(note);
                 }
             }
