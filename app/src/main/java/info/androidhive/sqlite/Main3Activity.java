@@ -49,7 +49,7 @@ public class Main3Activity extends AppCompatActivity {
     private List<Note> notesList = new ArrayList<>();
     private CoordinatorLayout coordinatorLayout;
     private RecyclerView recyclerView;
-    private TextView noNotesView;
+  //  private TextView noNotesView;
 
     private DatabaseHelper db;
 
@@ -61,14 +61,26 @@ public class Main3Activity extends AppCompatActivity {
         imgGrid = (ImageView) findViewById(R.id.grid);
 
 
+
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tasksFragment = new Fragment_List();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment,tasksFragment);
-                ft.commit();
+
+                if (db.getNotesCount() > 0) {
+                    tasksFragment = new Fragment_List();
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.fragment,tasksFragment);
+                    ft.commit();
+                } else {
+                    tasksFragment = new Fragment_NoTasks();
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.fragment,tasksFragment);
+                    ft.commit();
+                }
+
+
             }
         });
 
@@ -88,7 +100,7 @@ public class Main3Activity extends AppCompatActivity {
 
         coordinatorLayout = findViewById(R.id.coordinator_layout);
         recyclerView = findViewById(R.id.recycler_view);
-        noNotesView = findViewById(R.id.empty_notes_view);
+
 
         db = new DatabaseHelper(this);
 
@@ -99,6 +111,7 @@ public class Main3Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showNoteDialog(false, null, -1);
+
             }
         });
 
@@ -354,18 +367,28 @@ public class Main3Activity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     /**
      * Toggling list and empty notes view
      */
-    private void toggleEmptyNotes() {
+    public void toggleEmptyNotes() {
         // you can check notesList.size() > 0
 
         if (db.getNotesCount() > 0) {
-            noNotesView.setVisibility(View.GONE);
+            tasksFragment = new Fragment_List();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
         } else {
-            noNotesView.setVisibility(View.VISIBLE);
+            tasksFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
         }
     }
 }

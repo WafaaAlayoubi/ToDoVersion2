@@ -23,6 +23,7 @@ public class Fragment_List extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_fragment__list, container, false);
+
     }
 
 }

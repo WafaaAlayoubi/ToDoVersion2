@@ -8,21 +8,35 @@
     android:paddingLeft="@dimen/activity_margin"
     android:paddingRight="@dimen/activity_margin"
     android:paddingTop="@dimen/dimen_10">
-
-    <TextView
-        android:id="@+id/dot"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dot_height"
-        android:layout_marginRight="@dimen/dot_margin_right"
-        android:layout_marginTop="@dimen/dimen_10"
-        android:includeFontPadding="false"
-        android:textColor="@color/colorAccent"
-        android:lineSpacingExtra="0dp"
-        android:textSize="@dimen/dot_text_size" />
-
-    <TextView
-        android:id="@+id/timestamp"
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:src="@drawable/task"/>
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="10"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="0dp"
+            android:id="@+id/dot"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/green"
+            android:layout_height="wrap_content" />
+
+    <CheckBox android:id="@+id/checkbox"
+        android:layout_alignLeft="@+id/dot"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/timestart"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/dot"
         android:textColor="@color/timestamp"
@@ -30,11 +44,20 @@
 
     <TextView
         android:id="@+id/note"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:layout_below="@id/timestamp"
+        android:layout_below="@id/timestart"
         android:layout_toRightOf="@id/dot"
         android:textColor="@color/note_list_text"
         android:textSize="@dimen/note_list_text" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:src="@drawable/smallbellof"/>
+    </LinearLayout>
 
 </RelativeLayout>

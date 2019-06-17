@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -28,14 +29,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView note;
-        public TextView dot;
-        public TextView timestamp;
+        public ImageView dot;
+        public TextView timestart;
 
         public MyViewHolder(View view) {
             super(view);
             note = view.findViewById(R.id.note);
             dot = view.findViewById(R.id.dot);
-            timestamp = view.findViewById(R.id.timestamp);
+            timestart = view.findViewById(R.id.timestart);
         }
     }
 
@@ -57,10 +58,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);
 
-        holder.note.setText(note.getTimeend());
+        holder.note.setText(note.getNote());
+        holder.timestart.setText(note.getTimestart());
 
         // Displaying dot from HTML character code
-        holder.dot.setText(Html.fromHtml("&#8226;"));
+       // holder.dot.setText(Html.fromHtml("&#8226;"));
 
         // Formatting and displaying timestamp
     }
