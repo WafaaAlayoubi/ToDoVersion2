@@ -57,7 +57,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);
 
-        holder.note.setText(note.getDate());
+        holder.note.setText(note.getTimeend());
 
         // Displaying dot from HTML character code
         holder.dot.setText(Html.fromHtml("&#8226;"));

@@ -348,8 +348,8 @@ public class Main3Activity extends AppCompatActivity {
                     String[] note = new String[5];
                     note[0] = inputNote.getText().toString();
                     note[1] = txtDate.getText().toString();
-                    note[1] = txtTime.getText().toString();
-                    note[1] = txtTime2.getText().toString();
+                    note[2] = txtTime.getText().toString();
+                    note[3] = txtTime2.getText().toString();
                     createNote(note);
                 }
             }
