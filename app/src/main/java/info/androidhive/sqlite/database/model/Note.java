@@ -9,6 +9,9 @@ public class Note {
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NOTE = "note";
+    public static final String COLUMN_CATEGORY = "category";
+    public static final String COLUMN_ALERT = "alert";
+    public static final String COLUMN_FINISH = "finish";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_TIMESTART = "timestart";
     public static final String COLUMN_TIMEEND = "timeend";
@@ -16,6 +19,9 @@ public class Note {
 
     private int id;
     private String note;
+    private String category;
+    private String alert;
+    private String finish;
     private String date;
     private String timestart;
     private String timeend;
@@ -28,6 +34,9 @@ public class Note {
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NOTE + " TEXT,"
+                    + COLUMN_CATEGORY + " TEXT,"
+                    + COLUMN_ALERT + " TEXT,"
+                    + COLUMN_FINISH + " TEXT,"
                     + COLUMN_DATE + " TEXT,"
                     + COLUMN_TIMESTART + " TEXT,"
                     + COLUMN_TIMEEND + " TEXT,"
@@ -53,9 +62,20 @@ public class Note {
         this.timeend = timeend;
     }
 
-    public Note(int id, String note, String date, String timestart, String timeend, String timestamp) {
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Note(int id, String note, String category,String alert,String finish, String date, String timestart, String timeend, String timestamp) {
         this.id = id;
         this.note = note;
+        this.category = category;
+        this.alert = alert;
+        this.finish = finish;
         this.date = date;
         this.timestart = timestart;
         this.timeend = timeend;
@@ -64,6 +84,22 @@ public class Note {
 
     public int getId() {
         return id;
+    }
+
+    public String getAlert() {
+        return alert;
+    }
+
+    public String getFinish() {
+        return finish;
+    }
+
+    public void setFinish(String finish) {
+        this.finish = finish;
+    }
+
+    public void setAlert(String alert) {
+        this.alert = alert;
     }
 
     public String getDate() {

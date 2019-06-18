@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -59,7 +60,6 @@ public class Main3Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
         imgHome = (ImageView) findViewById(R.id.home);
         imgGrid = (ImageView) findViewById(R.id.grid);
-
 
 
         imgHome.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +133,11 @@ public class Main3Activity extends AppCompatActivity {
                 recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
+
+                ImageView bell = (ImageView)view.findViewById(R.id.bell);
+                bell.setImageResource(R.drawable.smallbellon);
+
+
             }
 
             @Override
@@ -170,13 +175,19 @@ public class Main3Activity extends AppCompatActivity {
      * Updating note in db and updating
      * item in the list by its position
      */
-    private void updateNote(String note, int position) {
+    private void updateNote(String[] note,String note1, int position) {
         Note n = notesList.get(position);
         // updating note text
-        n.setNote(note);
+        n.setNote(note1);
+        n.setCategory(note[1]);
+        n.setAlert(note[2]);
+        n.setFinish(note[3]);
+        n.setDate(note[4]);
+        n.setTimestart(note[5]);
+        n.setTimeend(note[6]);
 
         // updating note in db
-        db.updateNote(n);
+        db.updateNote(note,n);
 
         // refreshing the list
         notesList.set(position, n);
@@ -353,21 +364,42 @@ public class Main3Activity extends AppCompatActivity {
                 if (TextUtils.isEmpty(inputNote.getText().toString())) {
                     Toast.makeText(Main3Activity.this, "Enter note!", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
+                } else if (TextUtils.isEmpty(txtDate.getText().toString())) {
+                    Toast.makeText(Main3Activity.this, "Enter date!", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (TextUtils.isEmpty(txtTime.getText().toString())) {
+                    Toast.makeText(Main3Activity.this, "Enter start time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }  else if (TextUtils.isEmpty(txtTime2.getText().toString())) {
+                    Toast.makeText(Main3Activity.this, "Enter end time!", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
                     alertDialog.dismiss();
                 }
 
                 // check if user updating note
                 if (shouldUpdate && note != null) {
                     // update note by it's id
-                    updateNote(inputNote.getText().toString(), position);
+                    String[] note = new String[7];
+                    note[0] = inputNote.getText().toString();
+                    note[1] = "personal";
+                    note[2] = "0";
+                    note[3] = "0";
+                    note[4] = txtDate.getText().toString();
+                    note[5] = txtTime.getText().toString();
+                    note[6] = txtTime2.getText().toString();
+                    updateNote(note,inputNote.getText().toString(), position);
                 } else {
                     // create new note
-                    String[] note = new String[5];
+                    String[] note = new String[7];
                     note[0] = inputNote.getText().toString();
-                    note[1] = txtDate.getText().toString();
-                    note[2] = txtTime.getText().toString();
-                    note[3] = txtTime2.getText().toString();
+                    note[1] = "personal";
+                    note[2] = "0";
+                    note[3] = "0";
+                    note[4] = txtDate.getText().toString();
+                    note[5] = txtTime.getText().toString();
+                    note[6] = txtTime2.getText().toString();
+
                     createNote(note);
                 }
             }
@@ -396,5 +428,11 @@ public class Main3Activity extends AppCompatActivity {
             ft.commit();
         }
     }
+
+//    public void bellon(View view){
+//        ImageView bell = (ImageView)view.findViewById(R.id.bell);
+//        bell.setImageResource(R.drawable.smallbellon);
+//
+//    }
 }
 

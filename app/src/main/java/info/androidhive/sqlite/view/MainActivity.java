@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         n.setNote(note);
 
         // updating note in db
-        db.updateNote(n);
+        //db.updateNote(n);
 
         // refreshing the list
         notesList.set(position, n);

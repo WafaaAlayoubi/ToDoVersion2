@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,11 +33,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         public ImageView dot;
         public TextView timestart;
 
-        public MyViewHolder(View view) {
+        public MyViewHolder(final View view) {
             super(view);
+
             note = view.findViewById(R.id.note);
             dot = view.findViewById(R.id.dot);
             timestart = view.findViewById(R.id.timestart);
+
         }
     }
 
@@ -50,6 +53,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.note_list_row, parent, false);
+
+
 
         return new MyViewHolder(itemView);
     }

@@ -53,6 +53,8 @@
         android:textColor="@color/note_list_text"
         android:textSize="@dimen/note_list_text" />
         <ImageView
+            android:id="@+id/bell"
+            android:onClick="bellon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"

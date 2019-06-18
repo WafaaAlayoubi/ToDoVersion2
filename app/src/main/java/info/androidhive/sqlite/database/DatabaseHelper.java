@@ -54,9 +54,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // `id` and `timestamp` will be inserted automatically.
         // no need to add them
         values.put(Note.COLUMN_NOTE, note[0]);
-        values.put(Note.COLUMN_DATE, note[1]);
-        values.put(Note.COLUMN_TIMESTART, note[2]);
-        values.put(Note.COLUMN_TIMEEND, note[3]);
+        values.put(Note.COLUMN_CATEGORY, note[1]);
+        values.put(Note.COLUMN_ALERT, note[2]);
+        values.put(Note.COLUMN_FINISH, note[3]);
+        values.put(Note.COLUMN_DATE, note[4]);
+        values.put(Note.COLUMN_TIMESTART, note[5]);
+        values.put(Note.COLUMN_TIMEEND, note[6]);
 
         // insert row
         long id = db.insert(Note.TABLE_NAME, null, values);
@@ -73,7 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(Note.TABLE_NAME,
-                new String[]{Note.COLUMN_ID, Note.COLUMN_NOTE,Note.COLUMN_DATE, Note.COLUMN_TIMESTART,Note.COLUMN_TIMEEND, Note.COLUMN_TIMESTAMP},
+                new String[]{Note.COLUMN_ID, Note.COLUMN_NOTE,Note.COLUMN_CATEGORY,Note.COLUMN_ALERT,Note.COLUMN_FINISH,Note.COLUMN_DATE, Note.COLUMN_TIMESTART,Note.COLUMN_TIMEEND, Note.COLUMN_TIMESTAMP},
                 Note.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
@@ -84,6 +87,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Note note = new Note(
                 cursor.getInt(cursor.getColumnIndex(Note.COLUMN_ID)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_NOTE)),
+                cursor.getString(cursor.getColumnIndex(Note.COLUMN_CATEGORY)),
+                cursor.getString(cursor.getColumnIndex(Note.COLUMN_ALERT)),
+                cursor.getString(cursor.getColumnIndex(Note.COLUMN_FINISH)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_DATE)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMESTART)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMEEND)),
@@ -111,6 +117,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Note note = new Note();
                 note.setId(cursor.getInt(cursor.getColumnIndex(Note.COLUMN_ID)));
                 note.setNote(cursor.getString(cursor.getColumnIndex(Note.COLUMN_NOTE)));
+                note.setCategory(cursor.getString(cursor.getColumnIndex(Note.COLUMN_CATEGORY)));
+                note.setAlert(cursor.getString(cursor.getColumnIndex(Note.COLUMN_ALERT)));
+                note.setFinish(cursor.getString(cursor.getColumnIndex(Note.COLUMN_FINISH)));
                 note.setDate(cursor.getString(cursor.getColumnIndex(Note.COLUMN_DATE)));
                 note.setTimestart(cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMESTART)));
                 note.setTimeend(cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMEEND)));
@@ -140,11 +149,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public int updateNote(Note note) {
+    public int updateNote(String[] note1,Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Note.COLUMN_NOTE, note.getNote());
+        values.put(Note.COLUMN_NOTE, note1[0]);
+        values.put(Note.COLUMN_CATEGORY, note1[1]);
+        values.put(Note.COLUMN_ALERT, note1[2]);
+        values.put(Note.COLUMN_FINISH, note1[3]);
+        values.put(Note.COLUMN_DATE, note1[4]);
+        values.put(Note.COLUMN_TIMESTART, note1[5]);
+        values.put(Note.COLUMN_TIMEEND, note1[6]);
 
         // updating row
         return db.update(Note.TABLE_NAME, values, Note.COLUMN_ID + " = ?",
