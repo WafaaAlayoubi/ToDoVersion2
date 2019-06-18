@@ -42,6 +42,7 @@ public class Main3Activity extends AppCompatActivity {
 
     ImageView imgHome;
     ImageView imgGrid;
+    ImageView bell;
     Fragment homeFragment;
     Fragment gridFragment;
     Fragment tasksFragment;
@@ -134,8 +135,47 @@ public class Main3Activity extends AppCompatActivity {
             @Override
             public void onClick(View view, final int position) {
 
-                ImageView bell = (ImageView)view.findViewById(R.id.bell);
-                bell.setImageResource(R.drawable.smallbellon);
+               bell = (ImageView)view.findViewById(R.id.bell);
+
+
+                bell.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        Note n = notesList.get(position);
+
+                        if(n.getAlert() == "0") {
+                            // updating note text
+                            n.setAlert("1");
+
+                            // updating note in db
+                            db.updateAlert("1", n);
+
+                            // refreshing the list
+                            notesList.set(position, n);
+                            mAdapter.notifyItemChanged(position);
+                            bell.setImageResource(R.drawable.smallbellon);
+                            toggleEmptyNotes();
+
+                        }
+                        else{
+                            // updating note text
+                            n.setAlert("0");
+
+                            // updating note in db
+                            db.updateAlert("0", n);
+
+                            // refreshing the list
+                            notesList.set(position, n);
+                            mAdapter.notifyItemChanged(position);
+                            bell.setImageResource(R.drawable.smallbellof);
+                            toggleEmptyNotes();
+                        }
+
+
+                    }
+                });
 
 
             }

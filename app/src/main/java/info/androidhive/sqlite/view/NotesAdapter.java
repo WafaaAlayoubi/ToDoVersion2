@@ -40,6 +40,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
             dot = view.findViewById(R.id.dot);
             timestart = view.findViewById(R.id.timestart);
 
+
         }
     }
 
@@ -63,7 +64,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);
 
-        holder.note.setText(note.getNote());
+        holder.note.setText(note.getAlert());
         holder.timestart.setText(note.getTimestart());
 
         // Displaying dot from HTML character code
