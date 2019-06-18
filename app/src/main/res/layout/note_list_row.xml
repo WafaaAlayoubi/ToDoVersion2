@@ -52,6 +52,7 @@
         android:layout_toRightOf="@id/dot"
         android:textColor="@color/note_list_text"
         android:textSize="@dimen/note_list_text" />
+
         <ImageView
             android:id="@+id/bell"
             android:onClick="bellon"

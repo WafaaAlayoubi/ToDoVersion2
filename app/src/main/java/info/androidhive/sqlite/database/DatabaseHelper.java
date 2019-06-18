@@ -55,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // no need to add them
         values.put(Note.COLUMN_NOTE, note[0]);
         values.put(Note.COLUMN_CATEGORY, note[1]);
-        values.put(Note.COLUMN_ALERT, note[2]);
+       // values.put(Note.COLUMN_ALERT, note[2]);
         values.put(Note.COLUMN_FINISH, note[3]);
         values.put(Note.COLUMN_DATE, note[4]);
         values.put(Note.COLUMN_TIMESTART, note[5]);

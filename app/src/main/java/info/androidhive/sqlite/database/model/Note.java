@@ -35,7 +35,7 @@ public class Note {
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NOTE + " TEXT,"
                     + COLUMN_CATEGORY + " TEXT,"
-                    + COLUMN_ALERT + " TEXT,"
+                    + COLUMN_ALERT + " TEXT DEFAULT 0,"
                     + COLUMN_FINISH + " TEXT,"
                     + COLUMN_DATE + " TEXT,"
                     + COLUMN_TIMESTART + " TEXT,"

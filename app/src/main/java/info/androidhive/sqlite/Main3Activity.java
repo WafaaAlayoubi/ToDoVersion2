@@ -145,21 +145,19 @@ public class Main3Activity extends AppCompatActivity {
 
                         Note n = notesList.get(position);
 
-                        if(n.getAlert() == "0") {
+                        if(n.getAlert().equals("0")) {
                             // updating note text
                             n.setAlert("1");
 
                             // updating note in db
-                            db.updateAlert("1", n);
+                           db.updateAlert("1", n);
 
                             // refreshing the list
                             notesList.set(position, n);
                             mAdapter.notifyItemChanged(position);
-                            bell.setImageResource(R.drawable.smallbellon);
                             toggleEmptyNotes();
 
-                        }
-                        else{
+                        }else if(n.getAlert().equals("1")) {
                             // updating note text
                             n.setAlert("0");
 
@@ -169,9 +167,10 @@ public class Main3Activity extends AppCompatActivity {
                             // refreshing the list
                             notesList.set(position, n);
                             mAdapter.notifyItemChanged(position);
-                            bell.setImageResource(R.drawable.smallbellof);
                             toggleEmptyNotes();
+
                         }
+
 
 
                     }
@@ -434,7 +433,7 @@ public class Main3Activity extends AppCompatActivity {
                     String[] note = new String[7];
                     note[0] = inputNote.getText().toString();
                     note[1] = "personal";
-                    note[2] = "0";
+                    //note[2] = "0";
                     note[3] = "0";
                     note[4] = txtDate.getText().toString();
                     note[5] = txtTime.getText().toString();

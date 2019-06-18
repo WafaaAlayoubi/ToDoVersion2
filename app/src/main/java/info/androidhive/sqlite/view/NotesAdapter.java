@@ -32,6 +32,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         public TextView note;
         public ImageView dot;
         public TextView timestart;
+        public ImageView bell;
 
         public MyViewHolder(final View view) {
             super(view);
@@ -39,7 +40,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
             note = view.findViewById(R.id.note);
             dot = view.findViewById(R.id.dot);
             timestart = view.findViewById(R.id.timestart);
-
+            bell =   view.findViewById(R.id.bell);
 
         }
     }
@@ -66,7 +67,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
         holder.note.setText(note.getAlert());
         holder.timestart.setText(note.getTimestart());
-
+        if(note.getAlert().equals("0")) {
+            holder.bell.setImageResource(R.drawable.smallbellof);
+        }
+        else {
+            holder.bell.setImageResource(R.drawable.smallbellon);
+        }
         // Displaying dot from HTML character code
        // holder.dot.setText(Html.fromHtml("&#8226;"));
 
