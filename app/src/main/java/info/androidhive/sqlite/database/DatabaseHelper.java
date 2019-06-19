@@ -55,8 +55,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // no need to add them
         values.put(Note.COLUMN_NOTE, note[0]);
         values.put(Note.COLUMN_CATEGORY, note[1]);
-       // values.put(Note.COLUMN_ALERT, note[2]);
-        values.put(Note.COLUMN_FINISH, note[3]);
         values.put(Note.COLUMN_DATE, note[4]);
         values.put(Note.COLUMN_TIMESTART, note[5]);
         values.put(Note.COLUMN_TIMEEND, note[6]);
@@ -155,8 +153,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Note.COLUMN_NOTE, note1[0]);
         values.put(Note.COLUMN_CATEGORY, note1[1]);
-        values.put(Note.COLUMN_ALERT, note1[2]);
-        values.put(Note.COLUMN_FINISH, note1[3]);
         values.put(Note.COLUMN_DATE, note1[4]);
         values.put(Note.COLUMN_TIMESTART, note1[5]);
         values.put(Note.COLUMN_TIMEEND, note1[6]);
@@ -171,6 +167,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(Note.COLUMN_ALERT, note1);
+
+        // updating row
+        return db.update(Note.TABLE_NAME, values, Note.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(note.getId())});
+    }
+    public int updateFinish(String note1,Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Note.COLUMN_FINISH, note1);
 
         // updating row
         return db.update(Note.TABLE_NAME, values, Note.COLUMN_ID + " = ?",

@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -43,6 +44,7 @@ public class Main3Activity extends AppCompatActivity {
     ImageView imgHome;
     ImageView imgGrid;
     ImageView bell;
+    ImageView finish;
     Fragment homeFragment;
     Fragment gridFragment;
     Fragment tasksFragment;
@@ -136,7 +138,46 @@ public class Main3Activity extends AppCompatActivity {
             public void onClick(View view, final int position) {
 
                bell = (ImageView)view.findViewById(R.id.bell);
+               finish = (ImageView)view.findViewById(R.id.finsih);
 
+
+                finish.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        Note n = notesList.get(position);
+
+                        if(n.getFinish().equals("0")) {
+                            // updating note text
+                            n.setFinish("1");
+
+                            // updating note in db
+                            db.updateFinish("1", n);
+
+                            // refreshing the list
+                            notesList.set(position, n);
+                            mAdapter.notifyItemChanged(position);
+                            toggleEmptyNotes();
+
+                        }else if(n.getFinish().equals("1")) {
+                            // updating note text
+                            n.setFinish("0");
+
+                            // updating note in db
+                            db.updateFinish("0", n);
+
+                            // refreshing the list
+                            notesList.set(position, n);
+                            mAdapter.notifyItemChanged(position);
+                            toggleEmptyNotes();
+
+                        }
+
+
+
+                    }
+                });
 
                 bell.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -422,8 +463,6 @@ public class Main3Activity extends AppCompatActivity {
                     String[] note = new String[7];
                     note[0] = inputNote.getText().toString();
                     note[1] = "personal";
-                    note[2] = "0";
-                    note[3] = "0";
                     note[4] = txtDate.getText().toString();
                     note[5] = txtTime.getText().toString();
                     note[6] = txtTime2.getText().toString();
@@ -433,8 +472,6 @@ public class Main3Activity extends AppCompatActivity {
                     String[] note = new String[7];
                     note[0] = inputNote.getText().toString();
                     note[1] = "personal";
-                    //note[2] = "0";
-                    note[3] = "0";
                     note[4] = txtDate.getText().toString();
                     note[5] = txtTime.getText().toString();
                     note[6] = txtTime2.getText().toString();

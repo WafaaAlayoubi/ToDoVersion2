@@ -5,6 +5,7 @@ package info.androidhive.sqlite.view;
  */
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         public ImageView dot;
         public TextView timestart;
         public ImageView bell;
+        public ImageView finish;
 
         public MyViewHolder(final View view) {
             super(view);
@@ -41,6 +43,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
             dot = view.findViewById(R.id.dot);
             timestart = view.findViewById(R.id.timestart);
             bell =   view.findViewById(R.id.bell);
+            finish =   view.findViewById(R.id.finsih);
 
         }
     }
@@ -65,13 +68,25 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);
 
-        holder.note.setText(note.getAlert());
+        holder.note.setText(note.getNote());
         holder.timestart.setText(note.getTimestart());
+
+
         if(note.getAlert().equals("0")) {
             holder.bell.setImageResource(R.drawable.smallbellof);
         }
         else {
             holder.bell.setImageResource(R.drawable.smallbellon);
+        }
+
+        if(note.getFinish().equals("0")) {
+            holder.finish.setImageResource(R.drawable.finishoff);
+            holder.note.setPaintFlags( holder.note.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+
+        }
+        else {
+            holder.finish.setImageResource(R.drawable.finishon);
+            holder.note.setPaintFlags(holder.note.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
         // Displaying dot from HTML character code
        // holder.dot.setText(Html.fromHtml("&#8226;"));

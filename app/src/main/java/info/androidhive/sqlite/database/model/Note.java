@@ -36,7 +36,7 @@ public class Note {
                     + COLUMN_NOTE + " TEXT,"
                     + COLUMN_CATEGORY + " TEXT,"
                     + COLUMN_ALERT + " TEXT DEFAULT 0,"
-                    + COLUMN_FINISH + " TEXT,"
+                    + COLUMN_FINISH + " TEXT DEFAULT 0,"
                     + COLUMN_DATE + " TEXT,"
                     + COLUMN_TIMESTART + " TEXT,"
                     + COLUMN_TIMEEND + " TEXT,"

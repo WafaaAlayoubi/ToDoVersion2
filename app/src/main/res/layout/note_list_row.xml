@@ -25,12 +25,13 @@
             android:src="@drawable/green"
             android:layout_height="wrap_content" />
 
-    <CheckBox android:id="@+id/checkbox"
+    <ImageView android:id="@+id/finsih"
         android:layout_alignLeft="@+id/dot"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:src="@drawable/finishoff"/>
 
     <TextView
         android:id="@+id/timestart"
