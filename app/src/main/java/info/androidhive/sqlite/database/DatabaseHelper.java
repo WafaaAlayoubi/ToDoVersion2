@@ -74,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(Note.TABLE_NAME,
-                new String[]{Note.COLUMN_ID, Note.COLUMN_NOTE,Note.COLUMN_CATEGORY,Note.COLUMN_ALERT,Note.COLUMN_FINISH,Note.COLUMN_DATE, Note.COLUMN_TIMESTART,Note.COLUMN_TIMEEND, Note.COLUMN_TIMESTAMP},
+                new String[]{Note.COLUMN_ID, Note.COLUMN_NOTE,Note.COLUMN_CATEGORY,Note.COLUMN_ALERT,Note.COLUMN_FINISH,Note.COLUMN_DATE,Note.COLUMN_DATEEND, Note.COLUMN_TIMESTART,Note.COLUMN_TIMEEND, Note.COLUMN_TIMESTAMP},
                 Note.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
@@ -89,6 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_ALERT)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_FINISH)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_DATE)),
+                cursor.getString(cursor.getColumnIndex(Note.COLUMN_DATEEND)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMESTART)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMEEND)),
                 cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMESTAMP)));
@@ -147,6 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setAlert(cursor.getString(cursor.getColumnIndex(Note.COLUMN_ALERT)));
                 note.setFinish(cursor.getString(cursor.getColumnIndex(Note.COLUMN_FINISH)));
                 note.setDate(cursor.getString(cursor.getColumnIndex(Note.COLUMN_DATE)));
+                note.setDateend(cursor.getString(cursor.getColumnIndex(Note.COLUMN_DATEEND)));
                 note.setTimestart(cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMESTART)));
                 note.setTimeend(cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMEEND)));
                 note.setTimestamp(cursor.getString(cursor.getColumnIndex(Note.COLUMN_TIMESTAMP)));
@@ -184,6 +186,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Note.COLUMN_DATE, note1[4]);
         values.put(Note.COLUMN_TIMESTART, note1[5]);
         values.put(Note.COLUMN_TIMEEND, note1[6]);
+        values.put(Note.COLUMN_DATEEND, note1[7]);
 
         // updating row
         return db.update(Note.TABLE_NAME, values, Note.COLUMN_ID + " = ?",

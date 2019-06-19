@@ -28,8 +28,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import info.androidhive.sqlite.R;
@@ -49,10 +52,7 @@ public class Main3Activity extends AppCompatActivity {
 
     ImageView bell;
     ImageView finish;
-    Fragment homeFragment;
-    Fragment gridFragment;
     Fragment tasksFragment;
-    Fragment gridListFragment;
     ImageView personalon;
     ImageView workon;
     ImageView meetingon;
@@ -61,6 +61,9 @@ public class Main3Activity extends AppCompatActivity {
     ImageView studyon;
     ImageView dialog_title;
     ImageView dot;
+
+    boolean inGrid,timeTrue ;
+
 
     String category = "personal" ;
 
@@ -79,11 +82,14 @@ public class Main3Activity extends AppCompatActivity {
         imgHome = (ImageView) findViewById(R.id.home);
         imgGrid = (ImageView) findViewById(R.id.grid);
 
+        inGrid = false;
 
 
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                inGrid = false;
+                timeTrue = true;
                 imgGrid.setImageResource(R.drawable.grid);
                 imgHome.setImageResource(R.drawable.home);
 
@@ -120,20 +126,18 @@ public class Main3Activity extends AppCompatActivity {
         imgGrid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                inGrid = false;
                 imgHome.setImageResource(R.drawable.home2);
                 imgGrid.setImageResource(R.drawable.grid2);
-                gridFragment = new Fragment_Grid();
+                tasksFragment = new Fragment_Grid();
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.fragment,gridFragment);
+                ft.replace(R.id.fragment,tasksFragment);
                 ft.commit();
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        coordinatorLayout = findViewById(R.id.coordinator_layout);
         recyclerView = findViewById(R.id.recycler_view);
 
 
@@ -295,6 +299,7 @@ public class Main3Activity extends AppCompatActivity {
         n.setDate(note[4]);
         n.setTimestart(note[5]);
         n.setTimeend(note[6]);
+        n.setDateend(note[7]);
 
         // updating note in db
         db.updateNote(note,n);
@@ -352,8 +357,8 @@ public class Main3Activity extends AppCompatActivity {
      * button text to UPDATE
      */
     private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
-        final ImageView btnDatePicker, btnTimePicker ,btnTimePicker2;
-        final  TextView txtDate, txtTime,txtTime2;
+        final ImageView  btnTimePicker2;
+        final  TextView txtDate,txtDate2, txtTime,txtTime2;
 
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getApplicationContext());
@@ -455,14 +460,42 @@ public class Main3Activity extends AppCompatActivity {
             }
         });
 
-        btnDatePicker=view.findViewById(R.id.btn_date);
-        btnTimePicker=view.findViewById(R.id.btn_time);
-        btnTimePicker2=view.findViewById(R.id.btn_time3);
+
         txtDate=view.findViewById(R.id.in_date);
         txtTime=view.findViewById(R.id.in_time);
         txtTime2=view.findViewById(R.id.in_time3);
+        txtDate2=view.findViewById(R.id.in_dateend);
 
-        btnDatePicker.setOnClickListener(new View.OnClickListener() {
+
+        txtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final int mYear, mMonth, mDay, mHour, mMinute;
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                txtTime2.setText("Time End");
+                txtDate2.setText("Date End");
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(Main3Activity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+
+
+            }
+        });
+        txtDate2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final int mYear, mMonth, mDay, mHour, mMinute;
@@ -479,20 +512,46 @@ public class Main3Activity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                try {
+
+                                    String sDate1= txtDate.getText().toString();
+                                    Date date1=new SimpleDateFormat("dd-MM-yyyy").parse(sDate1);
+                                    String sDate2= dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                                    Date date2=new SimpleDateFormat("dd-MM-yyyy").parse(sDate2);
+
+                                    if(date1.compareTo(date2) > 0){
+                                        Toast.makeText(Main3Activity.this, "Date1 is after Date2", Toast.LENGTH_LONG).show();
+                                    }
+                                    else if (date1.compareTo(date2) == 0){
+                                        timeTrue = false;
+                                        txtDate2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                    }
+                                    else {
+                                        timeTrue = true;
+                                        txtDate2.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                    }
+
+                                } catch (ParseException e) {              // Insert this block.
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
 
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
+
+
             }
         });
-        btnTimePicker.setOnClickListener(new View.OnClickListener() {
+        txtTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final int mYear, mMonth, mDay, mHour, mMinute;
                 final Calendar c = Calendar.getInstance();
                 mHour = c.get(Calendar.HOUR_OF_DAY);
                 mMinute = c.get(Calendar.MINUTE);
+                txtTime2.setText("Time End");
+                txtDate2.setText("Date End");
 
                 // Launch Time Picker Dialog
                 TimePickerDialog timePickerDialog = new TimePickerDialog(Main3Activity.this,
@@ -508,7 +567,7 @@ public class Main3Activity extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
-        btnTimePicker2.setOnClickListener(new View.OnClickListener() {
+        txtTime2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final int mYear, mMonth, mDay, mHour, mMinute;
@@ -523,8 +582,32 @@ public class Main3Activity extends AppCompatActivity {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
+                                if (timeTrue) {
+                                    txtTime2.setText(hourOfDay + ":" + minute);
+                                }
+                                else {
+                                    String string1 = txtTime.getText().toString();
+                                    String[] parts1 = string1.split(":");
+                                    int hour = Integer.parseInt(parts1[0]);
+                                    int minute1 = Integer.parseInt(parts1[1]);
+                                    if(hour > hourOfDay){
+                                        Toast.makeText(Main3Activity.this, "Time end befor Time start!", Toast.LENGTH_LONG).show();
 
-                                txtTime2.setText(hourOfDay + ":" + minute);
+                                    }else if (hour == hourOfDay){
+                                        if(minute1 < minute){
+                                            timeTrue = true;
+                                            txtTime2.setText(hourOfDay + ":" + minute);
+                                        }
+                                        else{
+                                            Toast.makeText(Main3Activity.this, "Time end should be after Time start!", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                    else{
+                                        timeTrue = true;
+                                        txtTime2.setText(hourOfDay + ":" + minute);
+                                    }
+
+                                }
                             }
                         }, mHour, mMinute, false);
                 timePickerDialog.show();
@@ -597,13 +680,16 @@ public class Main3Activity extends AppCompatActivity {
                 if (TextUtils.isEmpty(inputNote.getText().toString())) {
                     Toast.makeText(Main3Activity.this, "Enter note!", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (TextUtils.isEmpty(txtDate.getText().toString())) {
+                } else if (txtDate.getText().equals("Date Start")) {
                     Toast.makeText(Main3Activity.this, "Enter date!", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (TextUtils.isEmpty(txtTime.getText().toString())) {
+                }else if (txtDate2.getText().equals("Date End")) {
+                    Toast.makeText(Main3Activity.this, "Enter date!", Toast.LENGTH_SHORT).show();
+                    return;
+                }  else if (txtTime.getText().equals("Time Start")) {
                     Toast.makeText(Main3Activity.this, "Enter start time!", Toast.LENGTH_SHORT).show();
                     return;
-                }  else if (TextUtils.isEmpty(txtTime2.getText().toString())) {
+                }  else if (txtTime2.getText().equals("Time End")) {
                     Toast.makeText(Main3Activity.this, "Enter end time!", Toast.LENGTH_SHORT).show();
                     return;
                 }else {
@@ -613,21 +699,25 @@ public class Main3Activity extends AppCompatActivity {
                 // check if user updating note
                 if (shouldUpdate && note != null) {
                     // update note by it's id
-                    String[] note = new String[7];
+                    String[] note = new String[8];
                     note[0] = inputNote.getText().toString();
                     note[1] = category;
                     note[4] = txtDate.getText().toString();
                     note[5] = txtTime.getText().toString();
                     note[6] = txtTime2.getText().toString();
+                    note[7] = txtDate2.getText().toString();
+
+
                     updateNote(note,inputNote.getText().toString(), position);
                 } else {
                     // create new note
-                    String[] note = new String[7];
+                    String[] note = new String[8];
                     note[0] = inputNote.getText().toString();
                     note[1] = category;
                     note[4] = txtDate.getText().toString();
                     note[5] = txtTime.getText().toString();
                     note[6] = txtTime2.getText().toString();
+                    note[7] = txtDate2.getText().toString();
 
                     createNote(note);
                 }
@@ -658,13 +748,10 @@ public class Main3Activity extends AppCompatActivity {
         }
     }
 
-//    public void bellon(View view){
-//        ImageView bell = (ImageView)view.findViewById(R.id.bell);
-//        bell.setImageResource(R.drawable.smallbellon);
-//
-//    }
+
 
     public void gridWork(View view){
+        inGrid = true;
         db = new DatabaseHelper(this);
 
         notesList.clear();
@@ -678,17 +765,17 @@ public class Main3Activity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-                if (db.getNotesCount() > 0) {
-                    gridListFragment = new Fragment_ListGrid();
+                if (notesList.size() > 0) {
+                    tasksFragment = new Fragment_ListGrid();
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.fragment,gridListFragment);
+                    ft.replace(R.id.fragment,tasksFragment);
                     ft.commit();
                 } else {
-                    gridListFragment = new Fragment_NoTasks();
+                    tasksFragment = new Fragment_NoTasks();
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.fragment,gridListFragment);
+                    ft.replace(R.id.fragment,tasksFragment);
                     ft.commit();
                 }
 
@@ -696,6 +783,7 @@ public class Main3Activity extends AppCompatActivity {
 
     }
     public void gridPersonal(View view){
+        inGrid = true;
         db = new DatabaseHelper(this);
 
         notesList.clear();
@@ -710,16 +798,16 @@ public class Main3Activity extends AppCompatActivity {
 
 
         if (notesList.size() > 0) {
-            gridListFragment = new Fragment_ListGrid();
+            tasksFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         } else {
-            gridListFragment = new Fragment_NoTasks();
+            tasksFragment = new Fragment_NoTasks();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         }
 
@@ -727,6 +815,7 @@ public class Main3Activity extends AppCompatActivity {
 
     }
     public void gridMeeting(View view){
+        inGrid = true;
         db = new DatabaseHelper(this);
 
         notesList.clear();
@@ -741,16 +830,16 @@ public class Main3Activity extends AppCompatActivity {
 
 
         if (notesList.size() > 0) {
-            gridListFragment = new Fragment_ListGrid();
+            tasksFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         } else {
-            gridListFragment = new Fragment_NoTasks();
+            tasksFragment = new Fragment_NoTasks();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         }
 
@@ -758,6 +847,7 @@ public class Main3Activity extends AppCompatActivity {
 
     }
     public void gridShopping(View view){
+        inGrid = true;
         db = new DatabaseHelper(this);
 
         notesList.clear();
@@ -772,16 +862,16 @@ public class Main3Activity extends AppCompatActivity {
 
 
         if (notesList.size() > 0) {
-            gridListFragment = new Fragment_ListGrid();
+            tasksFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         } else {
-            gridListFragment = new Fragment_NoTasks();
+            tasksFragment = new Fragment_NoTasks();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         }
 
@@ -789,6 +879,7 @@ public class Main3Activity extends AppCompatActivity {
 
     }
     public void gridParty(View view){
+        inGrid = true;
         db = new DatabaseHelper(this);
 
         notesList.clear();
@@ -803,16 +894,16 @@ public class Main3Activity extends AppCompatActivity {
 
 
         if (notesList.size() > 0) {
-            gridListFragment = new Fragment_ListGrid();
+            tasksFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         } else {
-            gridListFragment = new Fragment_NoTasks();
+            tasksFragment = new Fragment_NoTasks();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         }
 
@@ -820,6 +911,8 @@ public class Main3Activity extends AppCompatActivity {
 
     }
     public void gridStudy(View view){
+
+        inGrid = true;
         db = new DatabaseHelper(this);
 
         notesList.clear();
@@ -834,21 +927,33 @@ public class Main3Activity extends AppCompatActivity {
 
 
         if (notesList.size() > 0) {
-            gridListFragment = new Fragment_ListGrid();
+            tasksFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         } else {
-            gridListFragment = new Fragment_NoTasks();
+            tasksFragment = new Fragment_NoTasks();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment,gridListFragment);
+            ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         }
 
 
 
+    }
+    @Override
+    public void onBackPressed(){
+        FragmentManager fm = getFragmentManager();
+        if (inGrid) {
+            inGrid = false;
+            tasksFragment = new Fragment_Grid();
+            FragmentManager fm1 = getFragmentManager();
+            FragmentTransaction ft = fm1.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
+        }
     }
 
 }

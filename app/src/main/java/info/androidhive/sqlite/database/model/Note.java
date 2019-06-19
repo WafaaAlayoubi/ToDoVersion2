@@ -13,6 +13,7 @@ public class Note {
     public static final String COLUMN_ALERT = "alert";
     public static final String COLUMN_FINISH = "finish";
     public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_DATEEND = "dateend";
     public static final String COLUMN_TIMESTART = "timestart";
     public static final String COLUMN_TIMEEND = "timeend";
     public static final String COLUMN_TIMESTAMP = "timestamp";
@@ -23,6 +24,7 @@ public class Note {
     private String alert;
     private String finish;
     private String date;
+    private String dateend;
     private String timestart;
     private String timeend;
     private String timestamp;
@@ -38,6 +40,7 @@ public class Note {
                     + COLUMN_ALERT + " TEXT DEFAULT 0,"
                     + COLUMN_FINISH + " TEXT DEFAULT 0,"
                     + COLUMN_DATE + " TEXT,"
+                    + COLUMN_DATEEND + " TEXT,"
                     + COLUMN_TIMESTART + " TEXT,"
                     + COLUMN_TIMEEND + " TEXT,"
                     + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
@@ -70,13 +73,14 @@ public class Note {
         this.category = category;
     }
 
-    public Note(int id, String note, String category,String alert,String finish, String date, String timestart, String timeend, String timestamp) {
+    public Note(int id, String note, String category,String alert,String finish, String date, String dateend, String timestart, String timeend, String timestamp) {
         this.id = id;
         this.note = note;
         this.category = category;
         this.alert = alert;
         this.finish = finish;
         this.date = date;
+        this.dateend = dateend;
         this.timestart = timestart;
         this.timeend = timeend;
         this.timestamp = timestamp;
@@ -104,6 +108,14 @@ public class Note {
 
     public String getDate() {
         return date;
+    }
+
+    public String getDateend() {
+        return dateend;
+    }
+
+    public void setDateend(String dateend) {
+        this.dateend = dateend;
     }
 
     public void setDate(String date) {
