@@ -709,7 +709,7 @@ public class Main3Activity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-        if (db.getNotesCount() > 0) {
+        if (notesList.size() > 0) {
             gridListFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -740,7 +740,7 @@ public class Main3Activity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-        if (db.getNotesCount() > 0) {
+        if (notesList.size() > 0) {
             gridListFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -771,7 +771,7 @@ public class Main3Activity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-        if (db.getNotesCount() > 0) {
+        if (notesList.size() > 0) {
             gridListFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -802,7 +802,7 @@ public class Main3Activity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-        if (db.getNotesCount() > 0) {
+        if (notesList.size() > 0) {
             gridListFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -833,7 +833,7 @@ public class Main3Activity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
 
-        if (db.getNotesCount() > 0) {
+        if (notesList.size() > 0) {
             gridListFragment = new Fragment_ListGrid();
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
