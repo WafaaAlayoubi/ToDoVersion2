@@ -22,10 +22,14 @@
             <TableRow>
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:id="@+id/grid_work"
+                    android:onClick="gridWork"
                     android:layout_height="wrap_content"
                     android:src="@drawable/item" />
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:id="@+id/grid_personal"
+                    android:onClick="gridPersonal"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:src="@drawable/item1" />
@@ -34,10 +38,12 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="gridMeeting"
                     android:src="@drawable/item2" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="gridShopping"
                     android:gravity="left"
                     android:src="@drawable/item3" />
             </TableRow>
@@ -45,10 +51,12 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="gridParty"
                     android:src="@drawable/item4" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="gridStudy"
                     android:gravity="left"
                     android:src="@drawable/item5" />
             </TableRow>

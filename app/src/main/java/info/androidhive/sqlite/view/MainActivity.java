@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        notesList.addAll(db.getAllNotes());
+        notesList.addAll(db.getAllNotes("all"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

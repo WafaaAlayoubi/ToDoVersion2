@@ -37,17 +37,22 @@ import info.androidhive.sqlite.database.DatabaseHelper;
 import info.androidhive.sqlite.database.model.Note;
 import info.androidhive.sqlite.utils.MyDividerItemDecoration;
 import info.androidhive.sqlite.utils.RecyclerTouchListener;
+import info.androidhive.sqlite.view.Fragment_ListGrid;
 import info.androidhive.sqlite.view.NotesAdapter;
 
 public class Main3Activity extends AppCompatActivity {
 
     ImageView imgHome;
     ImageView imgGrid;
+
+    ImageView personal;
+
     ImageView bell;
     ImageView finish;
     Fragment homeFragment;
     Fragment gridFragment;
     Fragment tasksFragment;
+    Fragment gridListFragment;
     ImageView personalon;
     ImageView workon;
     ImageView meetingon;
@@ -75,11 +80,25 @@ public class Main3Activity extends AppCompatActivity {
         imgGrid = (ImageView) findViewById(R.id.grid);
 
 
+
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imgGrid.setImageResource(R.drawable.grid);
                 imgHome.setImageResource(R.drawable.home);
+
+                db = new DatabaseHelper(Main3Activity.this);
+
+                notesList.clear();
+
+                notesList.addAll(db.getAllNotes("all"));
+                mAdapter = new NotesAdapter(Main3Activity.this, notesList);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.addItemDecoration(new MyDividerItemDecoration(Main3Activity.this, LinearLayoutManager.VERTICAL, 16));
+                recyclerView.setAdapter(mAdapter);
+
                 if (db.getNotesCount() > 0) {
                     tasksFragment = new Fragment_List();
                     FragmentManager fm = getFragmentManager();
@@ -120,7 +139,7 @@ public class Main3Activity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        notesList.addAll(db.getAllNotes());
+        notesList.addAll(db.getAllNotes("all"));
 
         ImageView fab = (ImageView) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -645,10 +664,192 @@ public class Main3Activity extends AppCompatActivity {
 //
 //    }
 
-//    public void personalon(View view){
-//        ImageView personalon = (ImageView)view.findViewById(R.id.personal);
-//        personalon.setImageResource(R.drawable.personalon);
-//
-//    }
+    public void gridWork(View view){
+        db = new DatabaseHelper(this);
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("work"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+                if (db.getNotesCount() > 0) {
+                    gridListFragment = new Fragment_ListGrid();
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.fragment,gridListFragment);
+                    ft.commit();
+                } else {
+                    gridListFragment = new Fragment_NoTasks();
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.fragment,gridListFragment);
+                    ft.commit();
+                }
+
+
+
+    }
+    public void gridPersonal(View view){
+        db = new DatabaseHelper(this);
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("personal"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+        if (db.getNotesCount() > 0) {
+            gridListFragment = new Fragment_ListGrid();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        } else {
+            gridListFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        }
+
+
+
+    }
+    public void gridMeeting(View view){
+        db = new DatabaseHelper(this);
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("meeting"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+        if (db.getNotesCount() > 0) {
+            gridListFragment = new Fragment_ListGrid();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        } else {
+            gridListFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        }
+
+
+
+    }
+    public void gridShopping(View view){
+        db = new DatabaseHelper(this);
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("shopping"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+        if (db.getNotesCount() > 0) {
+            gridListFragment = new Fragment_ListGrid();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        } else {
+            gridListFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        }
+
+
+
+    }
+    public void gridParty(View view){
+        db = new DatabaseHelper(this);
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("party"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+        if (db.getNotesCount() > 0) {
+            gridListFragment = new Fragment_ListGrid();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        } else {
+            gridListFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        }
+
+
+
+    }
+    public void gridStudy(View view){
+        db = new DatabaseHelper(this);
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("study"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+        if (db.getNotesCount() > 0) {
+            gridListFragment = new Fragment_ListGrid();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        } else {
+            gridListFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,gridListFragment);
+            ft.commit();
+        }
+
+
+
+    }
+
 }
 

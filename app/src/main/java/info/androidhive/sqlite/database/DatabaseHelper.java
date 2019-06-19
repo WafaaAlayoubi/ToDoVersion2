@@ -99,12 +99,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return note;
     }
 
-    public List<Note> getAllNotes() {
-        List<Note> notes = new ArrayList<>();
+    public List<Note> getAllNotes(String name) {
 
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " ORDER BY " +
-                Note.COLUMN_TIMESTAMP + " DESC";
+        List<Note> notes = new ArrayList<>();
+        String selectQuery;
+
+            // Select All Query
+             selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " ORDER BY " +
+                    Note.COLUMN_TIMESTAMP + " DESC";
+
+         if (name == "personal"){
+             selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                    Note.COLUMN_CATEGORY + " = " + "'personal'";
+        }
+        if (name == "work"){
+            selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                    Note.COLUMN_CATEGORY + " = " + "'work'";
+        }
+        if (name == "meeting"){
+            selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                    Note.COLUMN_CATEGORY + " = " + "'meeting'";
+        }
+        if (name == "shopping"){
+            selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                    Note.COLUMN_CATEGORY + " = " + "'shopping'";
+        }
+        if (name == "party"){
+            selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                    Note.COLUMN_CATEGORY + " = " + "'party'";
+        }
+        if (name == "study"){
+            selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                    Note.COLUMN_CATEGORY + " = " + "'study'";
+        }
+
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
