@@ -36,6 +36,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         public ImageView bell;
         public ImageView finish;
 
+
         public MyViewHolder(final View view) {
             super(view);
 
@@ -68,7 +69,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);
 
-        holder.note.setText(note.getNote());
+        holder.note.setText(note.getCategory());
         holder.timestart.setText(note.getTimestart());
 
 
@@ -88,6 +89,27 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
             holder.finish.setImageResource(R.drawable.finishon);
             holder.note.setPaintFlags(holder.note.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
+
+        if(note.getCategory().equals("personal")){
+            holder.dot.setImageResource(R.drawable.yellow);
+        }
+        if(note.getCategory().equals("work")){
+            holder.dot.setImageResource(R.drawable.green);
+        }
+        if(note.getCategory().equals("meeting")){
+            holder.dot.setImageResource(R.drawable.ligthpurple);
+        }
+        if(note.getCategory().equals("shopping")){
+            holder.dot.setImageResource(R.drawable.orange);
+        }
+        if(note.getCategory().equals("party")){
+            holder.dot.setImageResource(R.drawable.blue);
+        }if(note.getCategory().equals("study")){
+            holder.dot.setImageResource(R.drawable.darkpurple);
+        }
+
+
+
         // Displaying dot from HTML character code
        // holder.dot.setText(Html.fromHtml("&#8226;"));
 

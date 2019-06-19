@@ -37,16 +37,22 @@
         android:padding="20dp"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/personal"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:src="@drawable/personal"/>
+            android:src="@drawable/personalon"/>
         <ImageView
+            android:id="@+id/work"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:src="@drawable/work"/>
         <ImageView
+            android:id="@+id/meeting"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -60,16 +66,22 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/shopping"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:src="@drawable/shopping"/>
         <ImageView
+            android:id="@+id/party"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:src="@drawable/party"/>
         <ImageView
+            android:id="@+id/study"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

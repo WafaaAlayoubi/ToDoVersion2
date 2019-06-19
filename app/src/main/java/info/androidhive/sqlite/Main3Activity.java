@@ -48,6 +48,16 @@ public class Main3Activity extends AppCompatActivity {
     Fragment homeFragment;
     Fragment gridFragment;
     Fragment tasksFragment;
+    ImageView personalon;
+    ImageView workon;
+    ImageView meetingon;
+    ImageView shoppingon;
+    ImageView partyon;
+    ImageView studyon;
+    ImageView dialog_title;
+    ImageView dot;
+
+    String category = "personal" ;
 
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
@@ -68,7 +78,8 @@ public class Main3Activity extends AppCompatActivity {
         imgHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                imgGrid.setImageResource(R.drawable.grid);
+                imgHome.setImageResource(R.drawable.home);
                 if (db.getNotesCount() > 0) {
                     tasksFragment = new Fragment_List();
                     FragmentManager fm = getFragmentManager();
@@ -90,6 +101,8 @@ public class Main3Activity extends AppCompatActivity {
         imgGrid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                imgHome.setImageResource(R.drawable.home2);
+                imgGrid.setImageResource(R.drawable.grid2);
                 gridFragment = new Fragment_Grid();
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -260,8 +273,6 @@ public class Main3Activity extends AppCompatActivity {
         // updating note text
         n.setNote(note1);
         n.setCategory(note[1]);
-        n.setAlert(note[2]);
-        n.setFinish(note[3]);
         n.setDate(note[4]);
         n.setTimestart(note[5]);
         n.setTimeend(note[6]);
@@ -339,6 +350,91 @@ public class Main3Activity extends AppCompatActivity {
 
 //        TextView dialogTitle = view.findViewById(R.id.dialog_title);
 //        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
+
+        personalon = (ImageView) view.findViewById(R.id.personal);
+        workon = (ImageView) view.findViewById(R.id.work);
+        meetingon = (ImageView) view.findViewById(R.id.meeting);
+        shoppingon = (ImageView) view.findViewById(R.id.shopping);
+        partyon = (ImageView) view.findViewById(R.id.party);
+        studyon = (ImageView) view.findViewById(R.id.study);
+
+        personalon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                personalon.setImageResource(R.drawable.personalon);
+                workon.setImageResource(R.drawable.work);
+                meetingon.setImageResource(R.drawable.meeting);
+                shoppingon.setImageResource(R.drawable.shopping);
+                partyon.setImageResource(R.drawable.party);
+                studyon.setImageResource(R.drawable.study);
+                category = "personal";
+            }
+        });
+
+        workon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                workon.setImageResource(R.drawable.workon);
+                personalon.setImageResource(R.drawable.personal);
+                meetingon.setImageResource(R.drawable.meeting);
+                shoppingon.setImageResource(R.drawable.shopping);
+                partyon.setImageResource(R.drawable.party);
+                studyon.setImageResource(R.drawable.study);
+                category = "work";
+            }
+        });
+
+        meetingon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                meetingon.setImageResource(R.drawable.meetingon);
+                workon.setImageResource(R.drawable.work);
+                personalon.setImageResource(R.drawable.personal);
+                shoppingon.setImageResource(R.drawable.shopping);
+                partyon.setImageResource(R.drawable.party);
+                studyon.setImageResource(R.drawable.study);
+                category = "meeting";
+            }
+        });
+
+        shoppingon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shoppingon.setImageResource(R.drawable.shoppingon);
+                workon.setImageResource(R.drawable.work);
+                meetingon.setImageResource(R.drawable.meeting);
+                personalon.setImageResource(R.drawable.personal);
+                partyon.setImageResource(R.drawable.party);
+                studyon.setImageResource(R.drawable.study);
+                category = "shopping";
+            }
+        });
+
+        partyon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                partyon.setImageResource(R.drawable.partyon);
+                workon.setImageResource(R.drawable.work);
+                meetingon.setImageResource(R.drawable.meeting);
+                shoppingon.setImageResource(R.drawable.shopping);
+                personalon.setImageResource(R.drawable.personal);
+                studyon.setImageResource(R.drawable.study);
+                category = "party";
+            }
+        });
+
+        studyon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                studyon.setImageResource(R.drawable.studyon);
+                workon.setImageResource(R.drawable.work);
+                meetingon.setImageResource(R.drawable.meeting);
+                shoppingon.setImageResource(R.drawable.shopping);
+                partyon.setImageResource(R.drawable.party);
+                personalon.setImageResource(R.drawable.personal);
+                category = "study";
+            }
+        });
 
         btnDatePicker=view.findViewById(R.id.btn_date);
         btnTimePicker=view.findViewById(R.id.btn_time);
@@ -418,7 +514,45 @@ public class Main3Activity extends AppCompatActivity {
 
 
         if (shouldUpdate && note != null) {
+
+            dialog_title = (ImageView) view.findViewById(R.id.dialog_title);
+            dialog_title.setImageResource(R.drawable.updatetask);
+
             inputNote.setText(note.getNote());
+            txtDate.setText(note.getDate());
+            txtTime.setText(note.getTimestart());
+            txtTime2.setText(note.getTimeend());
+
+            if(note.getCategory().equals("personal")){
+                personalon.setImageResource(R.drawable.personalon);
+                category = "personal";
+            }
+            if(note.getCategory().equals("work")){
+                workon.setImageResource(R.drawable.workon);
+                personalon.setImageResource(R.drawable.personal);
+                category = "work";
+            }
+            if(note.getCategory().equals("meeting")){
+                meetingon.setImageResource(R.drawable.meetingon);
+                personalon.setImageResource(R.drawable.personal);
+                category = "meeting";
+            }
+            if(note.getCategory().equals("shopping")){
+                shoppingon.setImageResource(R.drawable.shoppingon);
+                personalon.setImageResource(R.drawable.personal);
+                category = "shopping";
+            }
+            if(note.getCategory().equals("party")){
+                partyon.setImageResource(R.drawable.partyon);
+                personalon.setImageResource(R.drawable.personal);
+                category = "party";
+            }
+            if(note.getCategory().equals("study")){
+                studyon.setImageResource(R.drawable.studyon);
+                personalon.setImageResource(R.drawable.personal);
+                category = "study";
+            }
+
         }
         alertDialogBuilderUserInput
                 .setCancelable(false)
@@ -462,7 +596,7 @@ public class Main3Activity extends AppCompatActivity {
                     // update note by it's id
                     String[] note = new String[7];
                     note[0] = inputNote.getText().toString();
-                    note[1] = "personal";
+                    note[1] = category;
                     note[4] = txtDate.getText().toString();
                     note[5] = txtTime.getText().toString();
                     note[6] = txtTime2.getText().toString();
@@ -471,7 +605,7 @@ public class Main3Activity extends AppCompatActivity {
                     // create new note
                     String[] note = new String[7];
                     note[0] = inputNote.getText().toString();
-                    note[1] = "personal";
+                    note[1] = category;
                     note[4] = txtDate.getText().toString();
                     note[5] = txtTime.getText().toString();
                     note[6] = txtTime2.getText().toString();
@@ -508,6 +642,12 @@ public class Main3Activity extends AppCompatActivity {
 //    public void bellon(View view){
 //        ImageView bell = (ImageView)view.findViewById(R.id.bell);
 //        bell.setImageResource(R.drawable.smallbellon);
+//
+//    }
+
+//    public void personalon(View view){
+//        ImageView personalon = (ImageView)view.findViewById(R.id.personal);
+//        personalon.setImageResource(R.drawable.personalon);
 //
 //    }
 }
