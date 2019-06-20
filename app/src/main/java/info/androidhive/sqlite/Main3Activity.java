@@ -1,11 +1,14 @@
 package info.androidhive.sqlite;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -560,6 +563,16 @@ public class Main3Activity extends AppCompatActivity {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                calendar.set(Calendar.MINUTE, minute);
+                                calendar.set(Calendar.SECOND, 0);
+
+                    Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE );
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getBroadcast(getApplicationContext(), 0, alertIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT ));
 
                                 txtTime.setText(hourOfDay + ":" + minute);
                             }
