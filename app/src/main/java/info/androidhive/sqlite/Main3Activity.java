@@ -227,6 +227,21 @@ public class Main3Activity extends AppCompatActivity {
 
                         if(n.getAlert().equals("0")) {
                             // updating note text
+                            String string1 = n.getTimestart();
+                            String[] parts1 = string1.split(":");
+                            int hour = Integer.parseInt(parts1[0]);
+                            int minute1 = Integer.parseInt(parts1[1]);
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(Calendar.HOUR_OF_DAY, hour);
+                            calendar.set(Calendar.MINUTE, minute1);
+                            calendar.set(Calendar.SECOND, 0);
+
+
+                            Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
+                            AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE );
+
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getBroadcast(getApplicationContext(), 0, alertIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT ));
                             n.setAlert("1");
 
                             // updating note in db
@@ -563,16 +578,7 @@ public class Main3Activity extends AppCompatActivity {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                calendar.set(Calendar.MINUTE, minute);
-                                calendar.set(Calendar.SECOND, 0);
 
-                    Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
-                    AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE );
-
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getBroadcast(getApplicationContext(), 0, alertIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT ));
 
                                 txtTime.setText(hourOfDay + ":" + minute);
                             }
