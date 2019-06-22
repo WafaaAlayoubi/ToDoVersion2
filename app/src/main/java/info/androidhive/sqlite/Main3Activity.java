@@ -232,12 +232,23 @@ public class Main3Activity extends AppCompatActivity {
                             int hour = Integer.parseInt(parts1[0]);
                             int minute1 = Integer.parseInt(parts1[1]);
                             Calendar calendar = Calendar.getInstance();
+
+                            String string2 = n.getDate();
+                            String[] parts = string2.split("-");
+                            int day = Integer.parseInt(parts[0]);
+                            int month = Integer.parseInt(parts[1]);
+                            int year23 = Integer.parseInt(parts[2]);
+
                             calendar.set(Calendar.HOUR_OF_DAY, hour);
                             calendar.set(Calendar.MINUTE, minute1);
                             calendar.set(Calendar.SECOND, 0);
+                            calendar.set(Calendar.DAY_OF_MONTH,day);
+                            calendar.set(Calendar.MONTH,month-1);
+                            calendar.set(Calendar.YEAR,year23);
 
 
-                            Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class);
+                            Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class)
+                                    .putExtra("taskName",n.getNote());
                             AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE );
 
                             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getBroadcast(getApplicationContext(), 0, alertIntent,
