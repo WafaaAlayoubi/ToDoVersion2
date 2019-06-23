@@ -5,34 +5,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Main3Activity">
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:id="@+id/header">
+   <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/rectangle3"
-            android:adjustViewBounds="true"
-            />
-        <LinearLayout
-            android:paddingTop="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:adjustViewBounds="true"></ImageView>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_gravity="bottom"
+android:weightSum="6"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
-            <ImageView
+                android:id="@+id/all"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
                 android:layout_weight="1"
-                android:src="@drawable/bell"/>
-        </LinearLayout>
+                android:onClick="homeAll"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:text="All" />
+    <TextView
+        android:id="@+id/today"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:onClick="todayAll"
+        android:layout_weight="1"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:text="Today" />
+    <TextView
+        android:id="@+id/tomorrow"
+        android:onClick="tomorrowAll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:text="Tomorrow" />
+    <TextView
+        android:id="@+id/calendar"
+        android:onClick="calenderAll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:text="Calendar" />
+</LinearLayout>
+   </FrameLayout>
 
-    </RelativeLayout>
+
+    </LinearLayout>
 
     <fragment
         android:id="@+id/fragment"

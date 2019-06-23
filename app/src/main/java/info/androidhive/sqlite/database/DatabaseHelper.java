@@ -5,10 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import info.androidhive.sqlite.Main3Activity;
 import info.androidhive.sqlite.database.model.Note;
 
 /**
@@ -100,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return note;
     }
 
-    public List<Note> getAllNotes(String name) {
+    public List<Note> getAllNotes(String name,String datec) {
 
         List<Note> notes = new ArrayList<>();
         String selectQuery;
@@ -109,27 +114,73 @@ public class DatabaseHelper extends SQLiteOpenHelper {
              selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " ORDER BY " +
                     Note.COLUMN_TIMESTAMP + " DESC";
 
-         if (name == "personal"){
+         if (name == "today"){
+             Date c = Calendar.getInstance().getTime();
+             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+             String formattedDate = df.format(c);
+             String[] parts = formattedDate.split("-");
+             int day = Integer.parseInt(parts[0]);
+             int month = Integer.parseInt(parts[1]);
+             int year23 = Integer.parseInt(parts[2]);
+             String today = day + "-" + month + "-" + year23;
+
+            // selectQuery = "SELECT  * FROM  '"+Note.TABLE_NAME+"' WHERE '"+Note.COLUMN_CATEGORY+"' = personal ";
+
+             selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                     Note.COLUMN_DATE + " = " + "'"+today+"'";
+
+        }else if (name == "calender"){
+
+            String[] parts = datec.split("-");
+            int day = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+            int year23 = Integer.parseInt(parts[2]);
+            String today = day + "-" + month + "-" + year23;
+
+            // selectQuery = "SELECT  * FROM  '"+Note.TABLE_NAME+"' WHERE '"+Note.COLUMN_CATEGORY+"' = personal ";
+
+            selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                    Note.COLUMN_DATE + " = " + "'"+today+"'";
+
+        }else if (name == "tomorrow"){
+
+             Calendar calendar = Calendar.getInstance();
+             calendar.add(Calendar.DAY_OF_YEAR, 1);
+             Date c = calendar.getTime();
+
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            String formattedDate = df.format(c);
+            String[] parts = formattedDate.split("-");
+            int day = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+            int year23 = Integer.parseInt(parts[2]);
+            String today = day + "-" + month + "-" + year23;
+
+
+            selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
+                    Note.COLUMN_DATE + " = " + "'"+today+"'";
+
+        }else if (name == "personal"){
              selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
                     Note.COLUMN_CATEGORY + " = " + "'personal'";
         }
-        if (name == "work"){
+        else if (name == "work"){
             selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
                     Note.COLUMN_CATEGORY + " = " + "'work'";
         }
-        if (name == "meeting"){
+        else if (name == "meeting"){
             selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
                     Note.COLUMN_CATEGORY + " = " + "'meeting'";
         }
-        if (name == "shopping"){
+        else if (name == "shopping"){
             selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
                     Note.COLUMN_CATEGORY + " = " + "'shopping'";
         }
-        if (name == "party"){
+        else if (name == "party"){
             selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
                     Note.COLUMN_CATEGORY + " = " + "'party'";
         }
-        if (name == "study"){
+       else if (name == "study"){
             selectQuery = "SELECT  * FROM " + Note.TABLE_NAME + " WHERE " +
                     Note.COLUMN_CATEGORY + " = " + "'study'";
         }

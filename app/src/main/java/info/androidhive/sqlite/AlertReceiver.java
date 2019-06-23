@@ -16,13 +16,13 @@ public class AlertReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        String name =intent.getStringExtra("taskName");
         PendingIntent notification = PendingIntent.getActivity(context, 0, new Intent(context, Main3Activity.class), 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.bell)
-                .setContentTitle("Reminder")
-                .setContentText("Your task")
+                .setContentTitle("App name")
+                .setContentText(name)
                 .setFullScreenIntent(notification,true)
                 .setColor(Color.rgb(90,148,228))
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000} );

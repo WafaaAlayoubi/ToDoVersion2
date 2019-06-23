@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -51,6 +52,8 @@ public class Main3Activity extends AppCompatActivity {
     ImageView imgHome;
     ImageView imgGrid;
 
+    String datec;
+
     ImageView personal;
 
     ImageView bell;
@@ -64,6 +67,11 @@ public class Main3Activity extends AppCompatActivity {
     ImageView studyon;
     ImageView dialog_title;
     ImageView dot;
+
+    TextView all ;
+    TextView today ;
+    TextView tomorrow ;
+    TextView calender1 ;
 
     boolean inGrid,timeTrue ;
 
@@ -84,6 +92,10 @@ public class Main3Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main3);
         imgHome = (ImageView) findViewById(R.id.home);
         imgGrid = (ImageView) findViewById(R.id.grid);
+        all = (TextView) findViewById(R.id.all);
+        today = (TextView) findViewById(R.id.today);
+        tomorrow = (TextView) findViewById(R.id.tomorrow);
+        calender1 = (TextView) findViewById(R.id.calendar);
 
         inGrid = false;
 
@@ -100,7 +112,7 @@ public class Main3Activity extends AppCompatActivity {
 
                 notesList.clear();
 
-                notesList.addAll(db.getAllNotes("all"));
+                notesList.addAll(db.getAllNotes("all","nothing"));
                 mAdapter = new NotesAdapter(Main3Activity.this, notesList);
                 RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(mLayoutManager);
@@ -135,6 +147,19 @@ public class Main3Activity extends AppCompatActivity {
                 tasksFragment = new Fragment_Grid();
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
+
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                String formattedDate = df.format(c);
+                String[] parts = formattedDate.split("-");
+                int day = Integer.parseInt(parts[0]);
+                int month = Integer.parseInt(parts[1]);
+                int year23 = Integer.parseInt(parts[2]);
+                String today = day + "-" + month + "-" + year23;
+
+                Toast.makeText(Main3Activity.this, "sddg "+today, Toast.LENGTH_LONG).show();
+
+
                 ft.replace(R.id.fragment,tasksFragment);
                 ft.commit();
             }
@@ -146,7 +171,7 @@ public class Main3Activity extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
 
-        notesList.addAll(db.getAllNotes("all"));
+        notesList.addAll(db.getAllNotes("all","nothing"));
 
         ImageView fab = (ImageView) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -248,7 +273,8 @@ public class Main3Activity extends AppCompatActivity {
 
 
                             Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class)
-                                    .putExtra("taskName",n.getNote());
+                                    .putExtra("taskName",n.getNote())
+                                    .putExtra("position",position);
                             AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE );
 
                             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getBroadcast(getApplicationContext(), 0, alertIntent,
@@ -786,7 +812,7 @@ public class Main3Activity extends AppCompatActivity {
 
         notesList.clear();
 
-        notesList.addAll(db.getAllNotes("work"));
+        notesList.addAll(db.getAllNotes("work","nothing"));
         mAdapter = new NotesAdapter(this, notesList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -818,7 +844,7 @@ public class Main3Activity extends AppCompatActivity {
 
         notesList.clear();
 
-        notesList.addAll(db.getAllNotes("personal"));
+        notesList.addAll(db.getAllNotes("personal","nothing"));
         mAdapter = new NotesAdapter(this, notesList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -850,7 +876,7 @@ public class Main3Activity extends AppCompatActivity {
 
         notesList.clear();
 
-        notesList.addAll(db.getAllNotes("meeting"));
+        notesList.addAll(db.getAllNotes("meeting","nothing"));
         mAdapter = new NotesAdapter(this, notesList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -882,7 +908,7 @@ public class Main3Activity extends AppCompatActivity {
 
         notesList.clear();
 
-        notesList.addAll(db.getAllNotes("shopping"));
+        notesList.addAll(db.getAllNotes("shopping","nothing"));
         mAdapter = new NotesAdapter(this, notesList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -914,7 +940,7 @@ public class Main3Activity extends AppCompatActivity {
 
         notesList.clear();
 
-        notesList.addAll(db.getAllNotes("party"));
+        notesList.addAll(db.getAllNotes("party","nothing"));
         mAdapter = new NotesAdapter(this, notesList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -947,7 +973,7 @@ public class Main3Activity extends AppCompatActivity {
 
         notesList.clear();
 
-        notesList.addAll(db.getAllNotes("study"));
+        notesList.addAll(db.getAllNotes("study","nothing"));
         mAdapter = new NotesAdapter(this, notesList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -969,6 +995,214 @@ public class Main3Activity extends AppCompatActivity {
             ft.replace(R.id.fragment,tasksFragment);
             ft.commit();
         }
+
+
+
+    }
+
+    public void homeAll(View view){
+
+
+        db = new DatabaseHelper(this);
+
+        all.setBackgroundColor(Color.parseColor("#ffffff"));
+        all.setTextColor(Color.parseColor("#5A94E4"));
+
+        today.setBackgroundColor(0x00000000);
+        today.setTextColor(Color.parseColor("#ffffff"));
+
+        tomorrow.setBackgroundColor(0x00000000);
+        tomorrow.setTextColor(Color.parseColor("#ffffff"));
+
+        calender1.setBackgroundColor(0x00000000);
+        calender1.setTextColor(Color.parseColor("#ffffff"));
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("all","nothing"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+        if (notesList.size() > 0) {
+            tasksFragment = new Fragment_ListGrid();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
+        } else {
+            tasksFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
+        }
+
+
+
+    }
+
+    public void todayAll(View view){
+
+
+        db = new DatabaseHelper(this);
+
+        today.setBackgroundColor(Color.parseColor("#ffffff"));
+        today.setTextColor(Color.parseColor("#5A94E4"));
+
+        all.setBackgroundColor(0x00000000);
+        all.setTextColor(Color.parseColor("#ffffff"));
+
+        tomorrow.setBackgroundColor(0x00000000);
+        tomorrow.setTextColor(Color.parseColor("#ffffff"));
+
+        calender1.setBackgroundColor(0x00000000);
+        calender1.setTextColor(Color.parseColor("#ffffff"));
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("today","nothing"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+        if (notesList.size() > 0) {
+            tasksFragment = new Fragment_ListGrid();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
+        } else {
+            tasksFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
+        }
+
+
+
+    }
+
+    public void tomorrowAll(View view){
+
+
+        db = new DatabaseHelper(this);
+
+        tomorrow.setBackgroundColor(Color.parseColor("#ffffff"));
+        tomorrow.setTextColor(Color.parseColor("#5A94E4"));
+
+        all.setBackgroundColor(0x00000000);
+        all.setTextColor(Color.parseColor("#ffffff"));
+
+        today.setBackgroundColor(0x00000000);
+        today.setTextColor(Color.parseColor("#ffffff"));
+
+        calender1.setBackgroundColor(0x00000000);
+        calender1.setTextColor(Color.parseColor("#ffffff"));
+
+        notesList.clear();
+
+        notesList.addAll(db.getAllNotes("tomorrow","nothing"));
+        mAdapter = new NotesAdapter(this, notesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16));
+        recyclerView.setAdapter(mAdapter);
+
+
+        if (notesList.size() > 0) {
+            tasksFragment = new Fragment_ListGrid();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
+        } else {
+            tasksFragment = new Fragment_NoTasks();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment,tasksFragment);
+            ft.commit();
+        }
+
+
+
+    }
+
+    public void calenderAll(View view){
+        final int mYear, mMonth, mDay, mHour, mMinute;
+        final Calendar c = Calendar.getInstance();
+
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        db = new DatabaseHelper(this);
+
+        calender1.setBackgroundColor(Color.parseColor("#ffffff"));
+        calender1.setTextColor(Color.parseColor("#5A94E4"));
+
+        all.setBackgroundColor(0x00000000);
+        all.setTextColor(Color.parseColor("#ffffff"));
+
+        today.setBackgroundColor(0x00000000);
+        today.setTextColor(Color.parseColor("#ffffff"));
+
+        tomorrow.setBackgroundColor(0x00000000);
+        tomorrow.setTextColor(Color.parseColor("#ffffff"));
+
+
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(Main3Activity.this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        notesList.clear();
+
+                        datec = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        notesList.addAll(db.getAllNotes("calender", datec));
+                        
+                        mAdapter = new NotesAdapter(Main3Activity.this, notesList);
+                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                        recyclerView.setLayoutManager(mLayoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        recyclerView.addItemDecoration(new MyDividerItemDecoration(Main3Activity.this, LinearLayoutManager.VERTICAL, 16));
+                        recyclerView.setAdapter(mAdapter);
+
+
+                        if (notesList.size() > 0) {
+                            tasksFragment = new Fragment_ListGrid();
+                            FragmentManager fm = getFragmentManager();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ft.replace(R.id.fragment,tasksFragment);
+                            ft.commit();
+                        } else {
+                            tasksFragment = new Fragment_NoTasks();
+                            FragmentManager fm = getFragmentManager();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ft.replace(R.id.fragment,tasksFragment);
+                            ft.commit();
+                        }
+
+                    }
+
+
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+
+
 
 
 
