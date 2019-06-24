@@ -7,12 +7,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +24,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -87,8 +90,31 @@ public class Main3Activity extends AppCompatActivity {
     private DatabaseHelper db;
 
     @Override
+    protected void onResume(){
+
+
+        String action = getIntent().getAction();
+        // Prevent endless loop by adding a unique action, don't restart if action is present
+        if(action == null || !action.equals("Already created")) {
+
+            Intent intent = new Intent(this, Main3Activity.class);
+            startActivity(intent);
+            finish();
+        }
+        // Remove the unique action so the next time onResume is called it will restart
+        else
+            getIntent().setAction(null);
+
+        super.onResume();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getIntent().setAction("Already created");
+
         setContentView(R.layout.activity_main3);
         imgHome = (ImageView) findViewById(R.id.home);
         imgGrid = (ImageView) findViewById(R.id.grid);
@@ -98,6 +124,24 @@ public class Main3Activity extends AppCompatActivity {
         calender1 = (TextView) findViewById(R.id.calendar);
 
         inGrid = false;
+
+
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //Do something after 20 seconds
+//
+//                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                String currentDateandTime = sdf.format(new Date());
+//
+//
+//                Toast.makeText(Main3Activity.this, "sddg "+currentDateandTime, Toast.LENGTH_LONG).show();
+//                handler.postDelayed(this, 10000);
+//            }
+//        }, 3000);  //the time is in miliseconds
+
+
 
 
         imgHome.setOnClickListener(new View.OnClickListener() {
@@ -147,17 +191,6 @@ public class Main3Activity extends AppCompatActivity {
                 tasksFragment = new Fragment_Grid();
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-
-                Date c = Calendar.getInstance().getTime();
-                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                String formattedDate = df.format(c);
-                String[] parts = formattedDate.split("-");
-                int day = Integer.parseInt(parts[0]);
-                int month = Integer.parseInt(parts[1]);
-                int year23 = Integer.parseInt(parts[2]);
-                String today = day + "-" + month + "-" + year23;
-
-                Toast.makeText(Main3Activity.this, "sddg "+today, Toast.LENGTH_LONG).show();
 
 
                 ft.replace(R.id.fragment,tasksFragment);
@@ -277,7 +310,7 @@ public class Main3Activity extends AppCompatActivity {
                                     .putExtra("position",position);
                             AlarmManager alarmManager = (AlarmManager) getSystemService( ALARM_SERVICE );
 
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getBroadcast(getApplicationContext(), 0, alertIntent,
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getBroadcast(getApplicationContext(), 1, alertIntent,
                                     PendingIntent.FLAG_UPDATE_CURRENT ));
                             n.setAlert("1");
 
@@ -299,6 +332,49 @@ public class Main3Activity extends AppCompatActivity {
                             // refreshing the list
                             notesList.set(position, n);
                             mAdapter.notifyItemChanged(position);
+
+                            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                            Intent myIntent = new Intent(getApplicationContext(), AlertReceiver.class);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                    getApplicationContext(), 1, myIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            alarmManager.cancel(pendingIntent);
+
+                            for(int i = 0;i<notesList.size();i++){
+                                if(notesList.get(i).getAlert().equals("1")){
+                                    Note n1 = notesList.get(i);
+                                    String string1 = n1.getTimestart();
+                                    String[] parts1 = string1.split(":");
+                                    int hour = Integer.parseInt(parts1[0]);
+                                    int minute1 = Integer.parseInt(parts1[1]);
+                                    Calendar calendar = Calendar.getInstance();
+
+                                    String string2 = n1.getDate();
+                                    String[] parts = string2.split("-");
+                                    int day = Integer.parseInt(parts[0]);
+                                    int month = Integer.parseInt(parts[1]);
+                                    int year23 = Integer.parseInt(parts[2]);
+
+                                    calendar.set(Calendar.HOUR_OF_DAY, hour);
+                                    calendar.set(Calendar.MINUTE, minute1);
+                                    calendar.set(Calendar.SECOND, 0);
+                                    calendar.set(Calendar.DAY_OF_MONTH,day);
+                                    calendar.set(Calendar.MONTH,month-1);
+                                    calendar.set(Calendar.YEAR,year23);
+
+
+                                    Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class)
+                                            .putExtra("taskName",n.getNote())
+                                            .putExtra("position",position);
+                                    AlarmManager alarmManager1 = (AlarmManager) getSystemService( ALARM_SERVICE );
+
+                                    alarmManager1.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), PendingIntent.getBroadcast(getApplicationContext(), 1, alertIntent,
+                                            PendingIntent.FLAG_UPDATE_CURRENT ));
+                                }
+                            }
+
+
                             toggleEmptyNotes();
 
                         }
@@ -414,7 +490,6 @@ public class Main3Activity extends AppCompatActivity {
     private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
         final ImageView  btnTimePicker2;
         final  TextView txtDate,txtDate2, txtTime,txtTime2;
-
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getApplicationContext());
         View view = layoutInflaterAndroid.inflate(R.layout.note_dialog, null);
@@ -678,6 +753,7 @@ public class Main3Activity extends AppCompatActivity {
 
             inputNote.setText(note.getNote());
             txtDate.setText(note.getDate());
+            txtDate2.setText(note.getDateend());
             txtTime.setText(note.getTimestart());
             txtTime2.setText(note.getTimeend());
 
@@ -765,6 +841,7 @@ public class Main3Activity extends AppCompatActivity {
 
 
                     updateNote(note,inputNote.getText().toString(), position);
+                    onResume();
                 } else {
                     // create new note
                     String[] note = new String[8];
@@ -776,9 +853,12 @@ public class Main3Activity extends AppCompatActivity {
                     note[7] = txtDate2.getText().toString();
 
                     createNote(note);
+                    onResume();
                 }
             }
         });
+
+
 
 
     }
@@ -1173,7 +1253,7 @@ public class Main3Activity extends AppCompatActivity {
 
                         datec = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
                         notesList.addAll(db.getAllNotes("calender", datec));
-                        
+
                         mAdapter = new NotesAdapter(Main3Activity.this, notesList);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                         recyclerView.setLayoutManager(mLayoutManager);
@@ -1219,6 +1299,8 @@ public class Main3Activity extends AppCompatActivity {
             ft.commit();
         }
     }
+
+
 
 }
 

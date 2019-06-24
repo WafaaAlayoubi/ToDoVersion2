@@ -63,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Note.COLUMN_DATE, note[4]);
         values.put(Note.COLUMN_TIMESTART, note[5]);
         values.put(Note.COLUMN_TIMEEND, note[6]);
+        values.put(Note.COLUMN_DATEEND, note[7]);
 
         // insert row
         long id = db.insert(Note.TABLE_NAME, null, values);

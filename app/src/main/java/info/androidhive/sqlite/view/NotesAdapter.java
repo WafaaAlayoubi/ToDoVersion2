@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import info.androidhive.sqlite.Main3Activity;
 import info.androidhive.sqlite.R;
 import info.androidhive.sqlite.database.model.Note;
 
@@ -72,6 +73,26 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         holder.note.setText(note.getNote());
         holder.timestart.setText(note.getTimestart());
 
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String currentDateandTime = sdf.format(new Date());
+        String[] parts1 = currentDateandTime.split(":");
+        int hour1 = Integer.parseInt(parts1[0]);
+        int minute1 = Integer.parseInt(parts1[1]);
+
+        String startTime = note.getTimestart();
+        String[] parts2 = startTime.split(":");
+        int hour2 = Integer.parseInt(parts2[0]);
+        int minute2 = Integer.parseInt(parts2[1]);
+
+        if(hour1 > hour2){
+            holder.bell.setVisibility(View.INVISIBLE);
+
+        }else if (hour1 == hour2){
+            if(minute1 >= minute2){
+                holder.bell.setVisibility(View.INVISIBLE);
+            }
+
+        }
 
         if(note.getAlert().equals("0")) {
             holder.bell.setImageResource(R.drawable.smallbellof);
