@@ -152,6 +152,11 @@ public class Main3Activity extends AppCompatActivity {
                 imgGrid.setImageResource(R.drawable.grid);
                 imgHome.setImageResource(R.drawable.home);
 
+                all.setVisibility(View.VISIBLE);
+                today.setVisibility(View.VISIBLE);
+                tomorrow.setVisibility(View.VISIBLE);
+                calender1.setVisibility(View.VISIBLE);
+
                 db = new DatabaseHelper(Main3Activity.this);
 
                 notesList.clear();
@@ -192,6 +197,10 @@ public class Main3Activity extends AppCompatActivity {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
 
+                 all.setVisibility(View.INVISIBLE);
+                today.setVisibility(View.INVISIBLE);
+                tomorrow.setVisibility(View.INVISIBLE);
+                calender1.setVisibility(View.INVISIBLE);
 
                 ft.replace(R.id.fragment,tasksFragment);
                 ft.commit();
@@ -342,26 +351,31 @@ public class Main3Activity extends AppCompatActivity {
                             alarmManager.cancel(pendingIntent);
 
                             for(int i = 0;i<notesList.size();i++){
+                                AlarmManager alarmManager2 = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                Intent myIntent2 = new Intent(getApplicationContext(), AlertReceiver.class);
+                                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(
+                                        getApplicationContext(), 1, myIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT);
                                 if(notesList.get(i).getAlert().equals("1")){
                                     Note n1 = notesList.get(i);
-                                    String string1 = n1.getTimestart();
-                                    String[] parts1 = string1.split(":");
-                                    int hour = Integer.parseInt(parts1[0]);
-                                    int minute1 = Integer.parseInt(parts1[1]);
+                                    String string3 = n1.getTimestart();
+                                    String[] parts3 = string3.split(":");
+                                    int hour3 = Integer.parseInt(parts3[0]);
+                                    int minute3 = Integer.parseInt(parts3[1]);
                                     Calendar calendar = Calendar.getInstance();
 
-                                    String string2 = n1.getDate();
-                                    String[] parts = string2.split("-");
-                                    int day = Integer.parseInt(parts[0]);
-                                    int month = Integer.parseInt(parts[1]);
-                                    int year23 = Integer.parseInt(parts[2]);
+                                    String string4 = n1.getDate();
+                                    String[] parts4 = string4.split("-");
+                                    int day4 = Integer.parseInt(parts4[0]);
+                                    int month4 = Integer.parseInt(parts4[1]);
+                                    int year4 = Integer.parseInt(parts4[2]);
 
-                                    calendar.set(Calendar.HOUR_OF_DAY, hour);
-                                    calendar.set(Calendar.MINUTE, minute1);
+                                    calendar.set(Calendar.HOUR_OF_DAY, hour3);
+                                    calendar.set(Calendar.MINUTE, minute3);
                                     calendar.set(Calendar.SECOND, 0);
-                                    calendar.set(Calendar.DAY_OF_MONTH,day);
-                                    calendar.set(Calendar.MONTH,month-1);
-                                    calendar.set(Calendar.YEAR,year23);
+                                    calendar.set(Calendar.DAY_OF_MONTH,day4);
+                                    calendar.set(Calendar.MONTH,month4-1);
+                                    calendar.set(Calendar.YEAR,year4);
 
 
                                     Intent alertIntent = new Intent(getApplicationContext(), AlertReceiver.class)

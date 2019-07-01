@@ -16,6 +16,4 @@
     <style name="AppTheme.AppBarOverlay" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light.NoActionBar" />
-
-
 </resources>
