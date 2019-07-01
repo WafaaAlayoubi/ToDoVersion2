@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import info.androidhive.sqlite.Main3Activity;
 import info.androidhive.sqlite.database.model.Note;
 
 /**
@@ -235,6 +233,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Note.COLUMN_NOTE, note1[0]);
         values.put(Note.COLUMN_CATEGORY, note1[1]);
+        values.put(Note.COLUMN_ALERT, note1[2]);
+        values.put(Note.COLUMN_FINISH, note1[3]);
         values.put(Note.COLUMN_DATE, note1[4]);
         values.put(Note.COLUMN_TIMESTART, note1[5]);
         values.put(Note.COLUMN_TIMEEND, note1[6]);

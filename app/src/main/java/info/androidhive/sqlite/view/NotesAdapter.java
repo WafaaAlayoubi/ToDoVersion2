@@ -7,21 +7,18 @@ package info.androidhive.sqlite.view;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import info.androidhive.sqlite.Main3Activity;
 import info.androidhive.sqlite.R;
 import info.androidhive.sqlite.database.model.Note;
 
@@ -69,30 +66,61 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);
+        final int mYear, mMonth, mDay, mHour, mMinute;
+
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        try {
+
+            String sDate1= note.getDate();
+            Date date1=new SimpleDateFormat("dd-MM-yyyy").parse(sDate1);
+            String sDate2= mDay + "-" + (mMonth + 1) + "-" + mYear;
+            Date date2=new SimpleDateFormat("dd-MM-yyyy").parse(sDate2);
+
+            if(date1.compareTo(date2) > 0){
+                holder.bell.setVisibility(View.VISIBLE);
+
+            } else if (date1.compareTo(date2) == 0){
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                String currentDateandTime = sdf.format(new Date());
+                String[] parts1 = currentDateandTime.split(":");
+                int hour1 = Integer.parseInt(parts1[0]);
+                int minute1 = Integer.parseInt(parts1[1]);
+
+                String startTime = note.getTimestart();
+                String[] parts2 = startTime.split(":");
+                int hour2 = Integer.parseInt(parts2[0]);
+                int minute2 = Integer.parseInt(parts2[1]);
+
+                if(hour1 > hour2){
+                    holder.bell.setVisibility(View.INVISIBLE);
+
+                }else if (hour1 == hour2){
+                    if(minute1 >= minute2){
+                        holder.bell.setVisibility(View.INVISIBLE);
+                    }
+
+                }
+            }
+
+            else if(date1.compareTo(date2) < 0){
+                holder.bell.setVisibility(View.INVISIBLE);
+            }
+
+        } catch (ParseException e) {              // Insert this block.
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         holder.note.setText(note.getNote());
         holder.timestart.setText(note.getTimestart());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String currentDateandTime = sdf.format(new Date());
-        String[] parts1 = currentDateandTime.split(":");
-        int hour1 = Integer.parseInt(parts1[0]);
-        int minute1 = Integer.parseInt(parts1[1]);
 
-        String startTime = note.getTimestart();
-        String[] parts2 = startTime.split(":");
-        int hour2 = Integer.parseInt(parts2[0]);
-        int minute2 = Integer.parseInt(parts2[1]);
 
-        if(hour1 > hour2){
-            holder.bell.setVisibility(View.INVISIBLE);
 
-        }else if (hour1 == hour2){
-            if(minute1 >= minute2){
-                holder.bell.setVisibility(View.INVISIBLE);
-            }
-
-        }
 
         if(note.getAlert().equals("0")) {
             holder.bell.setImageResource(R.drawable.smallbellof);

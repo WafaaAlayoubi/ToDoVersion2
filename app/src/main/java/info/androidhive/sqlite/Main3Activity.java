@@ -410,6 +410,8 @@ public class Main3Activity extends AppCompatActivity {
         // updating note text
         n.setNote(note1);
         n.setCategory(note[1]);
+        n.setAlert(note[2]);
+        n.setFinish(note[3]);
         n.setDate(note[4]);
         n.setTimestart(note[5]);
         n.setTimeend(note[6]);
@@ -817,6 +819,8 @@ public class Main3Activity extends AppCompatActivity {
                     String[] note = new String[8];
                     note[0] = inputNote.getText().toString();
                     note[1] = category;
+                    note[2] = "0";
+                    note[3] = "0";
                     note[4] = txtDate.getText().toString();
                     note[5] = txtTime.getText().toString();
                     note[6] = txtTime2.getText().toString();
